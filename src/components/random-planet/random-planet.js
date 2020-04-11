@@ -6,7 +6,7 @@ import ErrorIndicator from "../error-indicator";
 
 export default class RandomPlanet extends Component {
 
-    swapiService = new SwapiService();
+    swapiService = new SwapiService(); // создали новый инстанс Сервиса
 
     state = {
         planet: {},
@@ -14,9 +14,10 @@ export default class RandomPlanet extends Component {
         error: false
     };
 
-    constructor() {  // в конструкторе вызываем сервис, который получит данные из API
-        super();
-        this.updatePlanet();
+    componentDidMount() {
+        this.updatePlanet(); // вызываем сервис, который получит данные из API
+        this.interval = setInterval(this.updatePlanet, 2500);
+        //clearInterval(this.interval);
     }
 
     onPlanetLoaded = (planet) => {
@@ -34,8 +35,9 @@ export default class RandomPlanet extends Component {
         });
     };
 
-    updatePlanet() {
-        const id = Math.floor(Math.random()*25 + 2);
+    updatePlanet = () => {
+        //console.log('update');
+        const id = Math.floor(Math.random()*25) + 3;
         this.swapiService
             .getPlanet(id)
             .then(this.onPlanetLoaded)
